@@ -34,3 +34,5 @@
 # Cmake dir
 cmake-build-debug
 .idea
+.vs
+out
