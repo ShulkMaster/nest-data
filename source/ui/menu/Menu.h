@@ -2,6 +2,9 @@
 #define NEST_MENU_H
 
 #include <iostream>
+#include <codecvt>
+#include <locale>
+#include "Console.h"
 #include "MenuOption.h"
 
 
@@ -9,11 +12,11 @@ class InvalidMenuOptionException : std::exception {
 private:
     const char *meg;
 public:
-    InvalidMenuOptionException(const char *reason, MenuOption *option);
+    InvalidMenuOptionException(const wchar_t* reason, MenuOption *option);
 
     const char *what() const noexcept override;
 
-    ~InvalidMenuOptionException() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_USE_NOEXCEPT override;
+    virtual ~InvalidMenuOptionException() override;
 };
 
 /**
@@ -33,12 +36,18 @@ private:
     /**
      * Holds a pointer to the array of options to display, this does not include the exit option
      */
-    MenuOption **options;
+    MenuOption **options = nullptr;
     unsigned short int optionSize = 0;
+    unsigned short int selectedIndex = 0;
+    MenuOption* selected;
+    Console *console;
+    std::wstring controlMsg = std::wstring(L"Use ↑ ↓ to navigate    	⏎ to select");
 public:
-    constexpr static const char *EXIT_ID = "exit";
+    constexpr static const wchar_t *EXIT_ID = L"exit";
     // var x = "exit";
-    constexpr static const char *EXIT_ID2 = "0";
+    constexpr static const wchar_t *EXIT_ID2 = L"0";
+
+    Menu();
 
     /**
      * Adds a new @MenuOption to be display in the list
@@ -56,7 +65,7 @@ public:
      * user preses or selects its corresponding ID
      * @return true as long as the user does not select the option exit
      */
-    bool render();
+    bool render() const;
 
     virtual ~Menu();
 };

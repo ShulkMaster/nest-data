@@ -1,10 +1,10 @@
-#include "Menu.h"
+﻿#include "Menu.h"
 
 /**
  * Contains a beautiful ASCII representation of a unicorn
  * Art by -Tua Xiong from https://www.asciiart.eu/mythology/unicorns
  */
-const char *UNICORN_BANNER = "              ,,))))))));,\n"
+const wchar_t*UNICORN_BANNER = L"              ,,))))))));,\n"
                              "            __)))))))))))))),\n"
                              "\\|/       -\\(((((''''((((((((.\n"
                              "-*-==//////((''  .     `)))))),\n"
@@ -25,8 +25,10 @@ const char *UNICORN_BANNER = "              ,,))))))));,\n"
                              "                                    ~~";
 
 
-InvalidMenuOptionException::InvalidMenuOptionException(const char *reason, MenuOption *option) {
-    meg = ("Option [" + std::string(option->id) + "]: " + reason).data();
+InvalidMenuOptionException::InvalidMenuOptionException(const wchar_t* reason, MenuOption* option) {
+    std::wstring newMessage = (L"Option [" + std::wstring(option->id) + L"]: " + reason);
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> strconverter;
+    meg = strconverter.to_bytes(newMessage).c_str();
 }
 
 const char *InvalidMenuOptionException::what() const noexcept {
@@ -38,9 +40,17 @@ InvalidMenuOptionException::~InvalidMenuOptionException() noexcept {
     delete meg;
 }
 
+Menu::Menu() {
+    console = new Console();
+}
+
 void Menu::addOption(MenuOption *option) noexcept(false) {
     if (EXIT_ID == option->id || EXIT_ID2 == option->id) {
-        throw InvalidMenuOptionException("Exit options already exist", option);
+        throw InvalidMenuOptionException(L"Exit options already exist", option);
+    }
+
+    if (optionSize == 0) {
+        selected = option;
     }
 
     auto newOptions = new MenuOption *[optionSize + 1];
@@ -52,13 +62,21 @@ void Menu::addOption(MenuOption *option) noexcept(false) {
     options = newOptions;
 }
 
-bool Menu::render() {
+bool Menu::render() const {
     for (int i = 0; i < optionSize; ++i) {
-        std::cout << options[i]->name << options[i]->id << std::endl;
+        if (selected == options[i]) {
+            (*console | L"=>" | L"[" | options[i]->id | L"] " | options[i]->name) << Console::end;
+            continue;
+        }
+        
+        *console << options[i]->id << " " << options[i]->name << Console::end;
     }
+    
+    *console << controlMsg << Console::end;
     return false;
 }
 
 Menu::~Menu() {
     delete[] options;
+    delete console;
 }

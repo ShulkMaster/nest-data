@@ -10,6 +10,8 @@ target_include_directories(nest PUBLIC
         source/ui/console
         source/ui/menu
         source/ui/menuOption
+        source/node
+        source/graph
         )
 
 target_sources(nest PUBLIC
@@ -17,5 +19,7 @@ target_sources(nest PUBLIC
         source/ui/console/Console.cpp
         source/ui/menu/Menu.cpp
         source/ui/menuOption/MenuOption.cpp
+        source/node/Node.cpp
+        source/graph/graph.cpp
         )
 

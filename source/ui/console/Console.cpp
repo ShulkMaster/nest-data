@@ -12,7 +12,7 @@ Console Console::operator<<(const char* msg) {
     return *this;
 }
 
-Console Console::operator<<(std::string msg) {
+Console Console::operator<<(std::wstring msg) {
     print << msg;
     return *this;
 }
@@ -27,7 +27,7 @@ Console Console::operator|(const char& msg) {
     return *this;
 }
 
-Console Console::operator|(std::string msg) {
+Console Console::operator|(std::wstring msg) {
     print << "\033[1;31m" << msg << "\033[0m";
     return *this;
 }

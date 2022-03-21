@@ -1,12 +1,18 @@
 #ifndef NEST_NODE_H
 #define NEST_NODE_H
 
+namespace DataStrut {
+    class Node {
+    private:
+        const Node *connections[24];
 
-class Node {
-public:
-    const Node* getNodes();
-    int getValue();
-};
+    public:
+        void getClosest(const Node array[8]);
 
+        const Node *const getAdjacencyList();
 
+        int getValue();
+    };
+
+}
 #endif //NEST_NODE_H

@@ -4,16 +4,16 @@
 
 class Console {
 public:
-    static char const end = '\n';
-    std::ostream& print = std::cout;
+    static char const end = L'\n';
+    std::wostream& print = std::wcout;
     Console operator<<(const char msg);
 
     Console operator<<(const char* msg);
-    Console operator<<(std::string msg);
+    Console operator<<(std::wstring msg);
     Console operator<<(int number);
 
     Console operator|(const char& msg);
-    Console operator|(std::string msg);
+    Console operator|(std::wstring msg);
     Console operator|(int number);
 };
 

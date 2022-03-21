@@ -4,9 +4,9 @@
 
 class MenuOption {
 public:
-    std::string name;
-    std::string id;
-    MenuOption(const char * id, const char * name);
+    std::wstring name;
+    std::wstring id;
+    MenuOption(const wchar_t* id, const wchar_t* name);
 };
 
 
